@@ -1,0 +1,15 @@
+*/node_module
+**/node_modules/
+
+*/.env
+**/.env
+
+*/.env.local
+**/.env.local
+.env
+.env.local
+
+*/attachments
+**/attachments
+
+attachments

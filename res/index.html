@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Email Listing</title>
+  </head>
+  <body>
+    <form class="form__body">
+      <img class="logo" src="./42.png" alt="42 logo" />
+      <p class="text">
+        Email sender using SMTP<br />Can only work with "outlook.com" sender!<br />I
+        don't save any data ^_^
+      </p>
+      <div class="conatiner__auth">
+        <div class="container">
+          <input
+            class="input"
+            type="email"
+            name="email"
+            id="sender__email"
+            placeholder="Sender email goes here"
+          />
+        </div>
+        <div class="container">
+          <input
+            class="input"
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Sender password goes here"
+          />
+        </div>
+      </div>
+      <div class="container">
+        <input
+          class="input"
+          type="email"
+          name="email"
+          id="email"
+          placeholder="Reciever email goes here"
+        />
+      </div>
+      <div class="container">
+        <input
+          class="input"
+          type="text"
+          name="subject"
+          id="subject"
+          placeholder="Subject goes here"
+        />
+      </div>
+      <div class="container">
+        <textarea
+          class="input"
+          name="message"
+          id="message"
+          placeholder="Message goes here"
+        ></textarea>
+      </div>
+      <div class="container">
+        <input type="file" class="input" name="file" id="file" />
+      </div>
+      <div class="container box">
+        <input type="checkbox" name="check" id="check" />
+        <label for="check">I agree to receive emails from you.</label>
+      </div>
+      <button class="submit">Send mail</button>
+    </form>
+
+    <script>
+      const button = document.querySelector(".submit");
+      const check = document.querySelector("#check");
+
+      const sender__email = document.querySelector("#sender__email");
+      const password = document.querySelector("#password");
+
+      const email = document.querySelector("#email");
+      const subject = document.querySelector("#subject");
+      const message = document.querySelector("#message");
+      const file = document.querySelector("#file");
+
+      const clear__fields = () => {
+        sender__email.value = "";
+        password.value = "";
+        email.value = "";
+        subject.value = "";
+        message.value = "";
+        file.value = "";
+      };
+
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (
+          email.value === "" ||
+          check.checked === false ||
+          sender__email.value === "" ||
+          password.value === "" ||
+          subject.value === "" ||
+          message.value === "" ||
+          file.files[0] === undefined
+        ) {
+          alert("Please fill in all the fields");
+        } else {
+          const data = new FormData();
+          data.append("sender__email", sender__email.value);
+          data.append("password", password.value);
+          data.append("email", email.value);
+          data.append("subject", subject.value);
+          data.append("message", message.value);
+          data.append("file", file.files[0]);
+          fetch("http://localhost:3000/emails", {
+            method: "POST",
+            body: data,
+          }).then((res) => {
+            if (res.status === 200) {
+              clear__fields();
+              alert("Email sent successfully");
+            } else {
+              alert("Email not sent");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
